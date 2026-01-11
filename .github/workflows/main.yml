@@ -15,8 +15,6 @@ on:
     branches: [ master,  github-workflow-playground ]
   pull_request:
     branches: [ master ]
-  schedule:
-    - cron: "0 0 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -1347,7 +1345,6 @@ jobs:
 
   window-msvc2022-build:
     runs-on: windows-latest
-    if: github.event_name == 'schedule'
     strategy:
       matrix:
         config:
