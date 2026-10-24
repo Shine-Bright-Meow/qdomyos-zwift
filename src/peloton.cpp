@@ -2552,7 +2552,7 @@ void peloton::onPelotonAuthorizeWithBrowser(const QUrl &url) {
     bool strava_auth_external_webbrowser =
         settings.value(QZSettings::strava_auth_external_webbrowser, QZSettings::default_strava_auth_external_webbrowser)
             .toBool();
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS))
+#if (defined(Q_OS_MAC) && !defined(Q_OS_IOS))
     strava_auth_external_webbrowser = true;
 #endif
     pelotonAuthUrl = url.toString();

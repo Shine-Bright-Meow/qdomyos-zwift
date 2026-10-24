@@ -884,7 +884,7 @@ homeform::homeform(QQmlApplicationEngine *engine, bluetooth *bl) {
     stravaWorkoutName = QLatin1String("");
     movieFileName = QUrl("");
 
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
+#if (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
 #ifndef STEAM_STORE
     connect(engine, &QQmlApplicationEngine::quit, &QGuiApplication::quit);
     connect(&tLicense, &QTimer::timeout, this, &homeform::licenseTimeout);
@@ -10269,7 +10269,7 @@ void homeform::onStravaAuthorizeWithBrowser(const QUrl &url) {
     bool strava_auth_external_webbrowser =
         settings.value(QZSettings::strava_auth_external_webbrowser, QZSettings::default_strava_auth_external_webbrowser)
             .toBool();
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS))
+#if (defined(Q_OS_MAC) && !defined(Q_OS_IOS))
     strava_auth_external_webbrowser = true;
 #endif
     stravaAuthUrl = url.toString();
@@ -11793,7 +11793,7 @@ int homeform::preview_workout_points() {
     return 0;
 }
 
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
+#if (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
 void homeform::licenseReply(QNetworkReply *reply) {
     QString r = reply->readAll();
     qDebug() << r;
@@ -12031,7 +12031,7 @@ void homeform::onIntervalsICUAuthorizeWithBrowser(const QUrl &url) {
     bool strava_auth_external_webbrowser =
         settings.value(QZSettings::strava_auth_external_webbrowser, QZSettings::default_strava_auth_external_webbrowser)
             .toBool();
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS))
+#if (defined(Q_OS_MAC) && !defined(Q_OS_IOS))
     strava_auth_external_webbrowser = true;
 #endif
     intervalsicuAuthUrl = url.toString();
