@@ -1204,6 +1204,12 @@ public:
     QTextToSpeech m_speech;
     int tts_summary_count = 0;
 
+#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
+    QTimer tLicense;
+    QNetworkAccessManager *mgr = nullptr;
+    void licenseRequest();
+#endif
+
     QGeoPath gpx_preview;
     PathController pathController;
     bool videoMustBeReset = true;
@@ -1327,6 +1333,11 @@ public:
     void StartFromDevice();  // Called when physical start button pressed on hardware
     void PauseFromDevice();  // Called when physical pause button pressed on hardware
     void StopFromDevice();   // Called when physical stop button pressed on hardware
+
+#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
+    void licenseReply(QNetworkReply *reply);
+    void licenseTimeout();
+#endif
 
     void toggleAutoResistance() { setAutoResistance(!autoResistance()); }
 
