@@ -884,15 +884,6 @@ homeform::homeform(QQmlApplicationEngine *engine, bluetooth *bl) {
     stravaWorkoutName = QLatin1String("");
     movieFileName = QUrl("");
 
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
-#ifndef STEAM_STORE
-    connect(engine, &QQmlApplicationEngine::quit, &QGuiApplication::quit);
-    connect(&tLicense, &QTimer::timeout, this, &homeform::licenseTimeout);
-    tLicense.start(600000);
-    licenseRequest();
-#endif
-#endif
-
     this->bluetoothManager = bl;
     this->engine = engine;
     connect(bluetoothManager, &bluetooth::bluetoothDeviceConnected, this, &homeform::bluetoothDeviceConnected);
@@ -11791,40 +11782,6 @@ int homeform::preview_workout_points() {
         return (d.hour() * 3600) + (d.minute() * 60) + d.second();
     }
     return 0;
-}
-
-#if defined(Q_OS_WIN) || (defined(Q_OS_MAC) && !defined(Q_OS_IOS)) || (defined(Q_OS_ANDROID) && defined(LICENSE))
-void homeform::licenseReply(QNetworkReply *reply) {
-    QString r = reply->readAll();
-    qDebug() << r;
-    static std::chrono::steady_clock::time_point lastNoAckToast;
-    if (r.contains("OK")) {
-        tLicense.stop();
-        lastNoAckToast = std::chrono::steady_clock::time_point{};
-        setToastRequested(tr("License Approved!"));
-    } else {
-        const auto now = std::chrono::steady_clock::now();
-        if (lastNoAckToast == std::chrono::steady_clock::time_point{} ||
-            now - lastNoAckToast >= std::chrono::minutes(5)) {
-            setToastRequested(tr("License not found"));
-            lastNoAckToast = now;
-        }
-        licenseRequest();
-    }
-}
-
-void homeform::licenseRequest() {
-    QTimer::singleShot(30000, this, [this]() {
-        QSettings settings;
-        if (!mgr) {
-            mgr = new QNetworkAccessManager(this);
-            connect(mgr, &QNetworkAccessManager::finished, this, &homeform::licenseReply);
-        }
-        QUrl url(QStringLiteral("http://robertoviola.cloud:4010/?supporter=") +
-                 settings.value(QZSettings::user_email, "").toString());
-        QNetworkRequest request(url);
-        mgr->get(request);
-    });
 }
 
 void homeform::licenseTimeout() { setLicensePopupVisible(true); }
