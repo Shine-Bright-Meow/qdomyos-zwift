@@ -275,6 +275,7 @@ mywhooshlink.cpp \
 garminconnect.cpp \
 devices/horizongr7bike/horizongr7bike.cpp \
 devices/horizontreadmill/horizontreadmill.cpp \
+devices/ypootreadmill/ypootreadmill.cpp \
 devices/iconceptbike/iconceptbike.cpp \
 devices/kettlerclassicbike/kettlerclassicbike.cpp \
 devices/kettlerclassicbike/kettlerclassicprotocol.cpp \
@@ -816,7 +817,9 @@ homeform.h \
 mywhooshlink.h \
 garminconnect.h \
 devices/horizontreadmill/horizontreadmill.h \
-devices/horizontreadmill/ypoom5control.h \
+devices/ypootreadmill/ypootreadmill.h \
+devices/ypootreadmill/ypoom5control.h \
+devices/ypootreadmill/ypoom5distance.h \
 devices/inspirebike/inspirebike.h \
 ios/lockscreen.h \
 keepawakehelper.h \
@@ -896,6 +899,7 @@ devices/ultrasportbike/ultrasportbike.h \
 devices/xcxbike/xcxbike.h \
 virtualdevices/virtualbike.h \
 virtualdevices/virtualrower.h \
+virtualdevices/virtualrowercadence.h \
 virtualdevices/virtualtreadmill.h \
 devices/domyosbike/domyosbike.h \
 devices/wahookickrsnapbike/wahookickrsnapbike.h \
@@ -1051,9 +1055,13 @@ ios {
 }
 
 ios {
+    # AVFoundation is used by the background keep alive (silent audio session)
+    LIBS += -framework AVFoundation
+
     OBJECTIVE_SOURCES += ios/lockscreen.mm \
     ios/ios_eliteariafan.mm \
     ios/ios_app_delegate.mm \
+    ios/ios_background_keepalive.mm \
     ios/ios_liveactivity.mm \
 	 fit-sdk/FitDecode.mm \
 	 fit-sdk/FitDeveloperField.mm \
@@ -1067,7 +1075,8 @@ ios {
     SOURCES += ios/M3iNSQT.cpp
 
     OBJECTIVE_HEADERS += ios/M3iNS.h \
-    ios/ios_liveactivity.h
+    ios/ios_liveactivity.h \
+    ios/ios_background_keepalive.h
 
     QMAKE_INFO_PLIST = ios/Info.plist
 	 QMAKE_ASSET_CATALOGS = $$PWD/ios/Images.xcassets
